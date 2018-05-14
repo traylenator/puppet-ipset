@@ -9,7 +9,7 @@ class ipset::install {
 
   # main package
   package { $::ipset::params::package:
-    ensure => 'latest',
+    ensure => $::ipset::params::package_ensure,
     alias  => 'ipset',
   }
 

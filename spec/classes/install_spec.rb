@@ -98,6 +98,7 @@ def check_rhel7_systemd_unit(firewall_service)
 end
 # rubocop:enable  Metrics/MethodLength
 
+# rubocop:disable  Metrics/BlockLength
 describe 'ipset::install' do
   %w[iptables firewalld].each do |firewall_service|
     context "RedHat 7 - #{firewall_service}" do
@@ -122,4 +123,19 @@ describe 'ipset::install' do
       end
     end
   end
+  context 'with package_ensure set' do
+    let(:pre_condition) do
+      <<~CONDITION
+        class { '::ipset::params':
+          package_ensure => 'present',
+        }
+      CONDITION
+    end
+    it do
+      is_expected.to contain_package('ipset').with(
+        ensure: 'present'
+      )
+    end
+  end
 end
+# rubocop:enable  Metrics/BlockLength

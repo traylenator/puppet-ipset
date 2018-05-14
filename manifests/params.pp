@@ -2,8 +2,11 @@
 #
 # @param use_firewall_service Define the firewall service used by the server.
 #   Defaults to the Linux distribution default.
+# @param package_ensure Defines the package ensure status of the ipset package.
+#   Defaults to latest.
 class ipset::params (
   Optional[Enum['iptables', 'firewalld']] $use_firewall_service = undef,
+  Enum['latest','present'] $package_ensure = 'latest',
 ) {
   $package = $facts['os']['family'] ? {
     'RedHat' => 'ipset',

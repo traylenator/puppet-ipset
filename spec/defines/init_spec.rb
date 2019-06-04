@@ -69,7 +69,7 @@ describe 'ipset' do
       check_file_set_header(
         'simple',
         # rubocop:disable Metrics/LineLength
-        content: "create simple hash:ip family inet hashsize 1024 maxelem 65536\n",
+        content: "create simple hash:ip family inet hashsize 1024 maxelem 65536\n"
         # rubocop:enable Metrics/LineLength
       )
       check_file_set_content('simple', set_file_attributes)
@@ -77,7 +77,7 @@ describe 'ipset' do
         'simple',
         # rubocop:disable Metrics/LineLength
         command: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d'    -i simple",
-        unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i simple",
+        unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i simple"
         # rubocop:enable Metrics/LineLength
       )
     end
@@ -99,7 +99,7 @@ describe 'ipset' do
     check_file_set_header(
       'custom',
       # rubocop:disable Metrics/LineLength
-      content: "create custom hash:net family inet hashsize 2048 maxelem 65536\n",
+      content: "create custom hash:net family inet hashsize 2048 maxelem 65536\n"
       # rubocop:enable Metrics/LineLength
     )
     check_file_set_content('custom', content: "10.0.0.0/8\n192.168.0.0/16")
@@ -107,7 +107,7 @@ describe 'ipset' do
       'custom',
       # rubocop:disable Metrics/LineLength
       command: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d'    -i custom -n",
-      unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i custom -n",
+      unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i custom -n"
       # rubocop:enable Metrics/LineLength
     )
   end

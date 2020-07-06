@@ -25,6 +25,7 @@ Options:
   -v  Verbose output
   -h  Shows this help message
   -i  Name of managed ipset
+  -f  family inet||inet6
 EOF
 }
 
@@ -64,12 +65,17 @@ function construct_ipset_dump() {
       # * cleanup
       #   * network mask suffix in complete IP (IPv4=32, IPv6=128)
       #   * trim whitespaces
+      if [ $family == 'inet' ] ; then
+          $suffix=32
+      else
+          $suffix=128
+      fi
       cat "${f_content}" | \
         grep -v '^[[:space:]]*#' | \
         grep -v '^[[:space:]]*$' | \
         sed -re 's@^[[:space:]]*@@' | \
         sed -re 's@[[:space:]]*$@@' | \
-        sed -re 's@/((32)|(128))$@@' | \
+        sed -re "s/\/${suffix}$//" | \
         sed -re "s/(.*)/add ${alias} \\1/" | \
         LC_ALL=C sort --unique
     fi
@@ -139,14 +145,18 @@ set_id=''
 check_only=0
 ignore_contents=0
 cfg="${default_cfg}"
+family='inet'
 
-while getopts "vc:dhi:n" OPTION; do
+while getopts "vc:dhi:nf:" OPTION; do
     case ${OPTION} in
       c)
         cfg=${OPTARG}
         ;;
       d)
         check_only=1
+        ;;
+      f)
+        family=${OPTARG}
         ;;
       h)
         usage

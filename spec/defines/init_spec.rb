@@ -76,8 +76,8 @@ describe 'ipset' do
       check_exec_sync(
         'simple',
         # rubocop:disable Metrics/LineLength
-        command: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d'    -i simple",
-        unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i simple",
+        command: "/usr/local/sbin/ipset_sync -f inet -c '/etc/sysconfig/ipset.d'    -i simple",
+        unless: "/usr/local/sbin/ipset_sync -f inet -c '/etc/sysconfig/ipset.d' -d -i simple",
         # rubocop:enable Metrics/LineLength
       )
     end
@@ -106,8 +106,8 @@ describe 'ipset' do
     check_exec_sync(
       'custom',
       # rubocop:disable Metrics/LineLength
-      command: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d'    -i custom -n",
-      unless: "/usr/local/sbin/ipset_sync -c '/etc/sysconfig/ipset.d' -d -i custom -n",
+      command: "/usr/local/sbin/ipset_sync -f inet -c '/etc/sysconfig/ipset.d'    -i custom -n",
+      unless: "/usr/local/sbin/ipset_sync -f inet -c '/etc/sysconfig/ipset.d' -d -i custom -n",
       # rubocop:enable Metrics/LineLength
     )
   end

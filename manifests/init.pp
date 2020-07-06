@@ -40,6 +40,11 @@ define ipset (
   # keep definition file and in-kernel runtime state in sync
   Boolean $keep_in_sync = true,
 ) {
+
+  if versioncmp($facts['os']['release']['major'],'8') >= 0 {
+    fail('The ipset module is not supported on C8 and newer. Use firewalld_ipset type from puppet-firewalld module on 8 and newer')
+  }
+
   include ipset::params
 
   contain ipset::install
@@ -111,10 +116,10 @@ define ipset (
       path    => [ '/sbin', '/usr/sbin', '/bin', '/usr/bin' ],
 
       # use helper script to do the sync
-      command => "/usr/local/sbin/ipset_sync -c '${::ipset::params::config_path}'    -i ${title}${ignore_contents_opt}",
+      command => "/usr/local/sbin/ipset_sync -f ${actual_options['family']} -c '${::ipset::params::config_path}'    -i ${title}${ignore_contents_opt}",
 
       # only when difference with in-kernel set is detected
-      unless  => "/usr/local/sbin/ipset_sync -c '${::ipset::params::config_path}' -d -i ${title}${ignore_contents_opt}",
+      unless  => "/usr/local/sbin/ipset_sync -f ${actual_options['family']} -c '${::ipset::params::config_path}' -d -i ${title}${ignore_contents_opt}",
 
       require => Package['ipset'],
     }
